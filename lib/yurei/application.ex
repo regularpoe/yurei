@@ -10,7 +10,7 @@ defmodule Yurei.Application do
 
     children = [
       {Task.Supervisor, name: Yurei.TaskSupervisor},
-      {Task, fn -> Yurei.accept(port) end}
+      Supervisor.child_spec({Task, fn -> Yurei.accept(port) end}, restart: :permanent)
     ]
 
     opts = [strategy: :one_for_one, name: Yurei.Supervisor]
