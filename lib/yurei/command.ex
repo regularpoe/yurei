@@ -1,19 +1,19 @@
 defmodule Yurei.Command do
   def parse(line) do
     case String.split(line) do
-      ["foo"] -> {:ok, {:foo}}
-      ["bar"] -> {:ok, {:bar}}
+      ["ls" | args] -> {:ok, {:ls, args}}
       _ -> {:error, :unknown_command}
     end
   end
 
-  def run(command)
+  def run(_command)
 
-  def run({:foo}) do
-    {:ok, "FOO called\r\n"}
-  end
+  def run({:ls, args}) do
+    dir = if Enum.empty?(args), do: ".", else: List.first(args)
 
-  def run({:bar}) do
-    {:ok, "BAR called\r\n"}
+    case System.cmd("ls", ["-lah", dir]) do
+      {output, 0} -> {:ok, output}
+      {error_msg, _} -> {:error, error_msg}
+    end
   end
 end
