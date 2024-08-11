@@ -3,7 +3,6 @@ defmodule Yurei.Application do
   use Application
 
   def start(_type, _args) do
-
     port = String.to_integer(System.get_env("PORT") || "9078")
 
     Logger.info("\yurei starting on port #{port}..")
